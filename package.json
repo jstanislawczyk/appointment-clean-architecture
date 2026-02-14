@@ -1,0 +1,38 @@
+{
+  "name": "appointment-clean-architecture",
+  "version": "1.0.0",
+  "description": "Example clean architecture implementation for the appointment project",
+  "keywords": [
+    "clean-architecture"
+  ],
+  "homepage": "https://github.com/jstanislawczyk/appointment-clean-architecture#readme",
+  "bugs": {
+    "url": "https://github.com/jstanislawczyk/appointment-clean-architecture/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jstanislawczyk/appointment-clean-architecture.git"
+  },
+  "license": "ISC",
+  "author": "jstanislawczyk",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/index.ts",
+    "lint": "eslint 'src/**/*.ts'"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.2.3",
+    "eslint": "^10.0.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
