@@ -1,0 +1,23 @@
+{
+  "name": "appointment-clean-architecture",
+  "version": "1.0.0",
+  "description": "Example clean architecture implementation for the appointment project",
+  "keywords": [
+    "clean-architecture"
+  ],
+  "homepage": "https://github.com/jstanislawczyk/appointment-clean-architecture#readme",
+  "bugs": {
+    "url": "https://github.com/jstanislawczyk/appointment-clean-architecture/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jstanislawczyk/appointment-clean-architecture.git"
+  },
+  "license": "ISC",
+  "author": "jstanislawczyk",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
