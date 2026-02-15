@@ -3,7 +3,8 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "module": "nodenext",
-    "target": "esnext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2020",
     "types": ["node"],
 
     "sourceMap": true,
@@ -17,5 +18,10 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true
   }
 }
