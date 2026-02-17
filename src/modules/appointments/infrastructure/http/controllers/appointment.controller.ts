@@ -6,12 +6,15 @@ export class AppointmentController {
 
   async create(request: Request, response: Response) {
     try {
-      const { title, description, duration } = request.body;
+      const { title, description, duration, clientName, startDate } =
+        request.body;
 
       const result = await this.createAppointment.execute({
         title,
         description,
         duration,
+        clientName,
+        startDate: new Date(startDate),
       });
 
       return response.status(201).json(result);

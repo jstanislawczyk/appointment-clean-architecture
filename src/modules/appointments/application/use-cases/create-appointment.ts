@@ -6,6 +6,8 @@ type CreateAppointmentInput = {
   title: string;
   description: string;
   duration: number;
+  clientName: string;
+  startDate: Date;
 };
 
 type CreateAppointmentOutput = {
@@ -21,8 +23,14 @@ export class CreateAppointment implements UseCase<
   async execute(
     input: CreateAppointmentInput,
   ): Promise<CreateAppointmentOutput> {
-    const { title, description, duration } = input;
-    const appointment = Appointment.create(title, description, duration);
+    const { title, description, duration, clientName, startDate } = input;
+    const appointment = Appointment.create(
+      title,
+      description,
+      duration,
+      clientName,
+      startDate,
+    );
 
     const savedAppointment = await this.appointmentRepository.save(appointment);
 
