@@ -1,3 +1,5 @@
+import type { Appointment } from '../entities/appointment.ts';
+
 export interface AppointmentRepository {
-  save(appointment: any): Promise<void>;
+  save(appointment: Appointment): Promise<Appointment>;
 }

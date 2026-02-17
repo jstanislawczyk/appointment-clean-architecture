@@ -3,16 +3,19 @@ import type { AppointmentRepository } from '../../../domain/repositories/appoint
 import { AppointmentMapper } from '../mappers/appointment.mapper.ts';
 import type { Appointment } from '../../../domain/entities/appointment.ts';
 import { AppointmentEntity } from '../entities/appointment.entity.ts';
+import type { Repository } from 'typeorm';
 
 export class DatabaseAppointmentRepository implements AppointmentRepository {
-  private readonly appointmentRepository: AppointmentRepository;
+  private readonly appointmentRepository: Repository<AppointmentEntity>;
 
   constructor() {
     this.appointmentRepository = dataSource.getRepository(AppointmentEntity);
   }
 
-  async save(appointment: Appointment): Promise<void> {
+  async save(appointment: Appointment): Promise<Appointment> {
     const ormEntity = AppointmentMapper.toEntity(appointment);
     await this.appointmentRepository.save(ormEntity);
+
+    return appointment;
   }
 }

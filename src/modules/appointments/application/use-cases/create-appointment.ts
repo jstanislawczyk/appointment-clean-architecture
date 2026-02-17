@@ -24,10 +24,10 @@ export class CreateAppointment implements UseCase<
     const { title, description, duration } = input;
     const appointment = Appointment.create(title, description, duration);
 
-    await this.appointmentRepository.save(appointment);
+    const savedAppointment = await this.appointmentRepository.save(appointment);
 
     return {
-      id: appointment.id,
+      id: savedAppointment.id,
     };
   }
 }
