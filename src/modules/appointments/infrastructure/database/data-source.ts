@@ -9,7 +9,7 @@ export const dataSource = new DataSource({
   database: 'appointments',
   synchronize: true,
   logging: false,
-  entities: ['src/entities/*.ts'],
+  entities: ['src/modules/appointments/infrastructure/database/entities/*.ts'],
   migrations: [],
   subscribers: [],
 });
