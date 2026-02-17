@@ -4,7 +4,6 @@ import { buildAppointmentController } from './modules/appointments/infrastructur
 
 export function createApp(): Express {
   const app = express();
-
   const appointmentController = buildAppointmentController();
 
   app.use(express.json());

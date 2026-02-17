@@ -12,5 +12,11 @@ export class AppointmentEntity {
   public description: string;
 
   @Column()
+  public clientName: string;
+
+  @Column()
   public duration: number;
+
+  @Column({ type: 'datetime' })
+  public startDate: Date;
 }
