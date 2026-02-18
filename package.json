@@ -21,6 +21,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "node --loader ts-node/esm src/index.ts",
+    "test": "node --test --loader ts-node/esm src/**/*.test.ts",
     "lint": "eslint 'src/**/*.ts'"
   },
   "dependencies": {

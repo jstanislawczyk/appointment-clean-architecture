@@ -3,7 +3,7 @@ import { Appointment } from '../../domain/entities/appointment.ts';
 import type { UseCase } from './use-case.ts';
 import { DateRange } from '../../domain/value-objects/date-range.ts';
 
-type CreateAppointmentInput = {
+export type CreateAppointmentInput = {
   title: string;
   description: string;
   clientName: string;
@@ -11,7 +11,7 @@ type CreateAppointmentInput = {
   endDate: Date;
 };
 
-type CreateAppointmentOutput = {
+export type CreateAppointmentOutput = {
   id: string;
 };
 
