@@ -1,5 +1,5 @@
 import { AppointmentEntity } from '../entities/appointment.entity.ts';
-import type { Appointment } from '../../../domain/entities/appointment.ts';
+import { Appointment } from '../../../domain/entities/appointment.ts';
 
 export class AppointmentMapper {
   static toEntity(appointment: Appointment): AppointmentEntity {
@@ -12,5 +12,16 @@ export class AppointmentMapper {
     orm.endDate = appointment.endDate.toDate();
 
     return orm;
+  }
+
+  static toDomain(orm: AppointmentEntity): Appointment {
+    return Appointment.rehydrate(
+      orm.id,
+      orm.title,
+      orm.description,
+      orm.clientName,
+      orm.startDate,
+      orm.endDate,
+    );
   }
 }
