@@ -43,4 +43,25 @@ export class Appointment {
       appointmentEndDate,
     );
   }
+
+  public static rehydrate(
+    id: string,
+    title: string,
+    description: string,
+    clientName: string,
+    startDate: Date,
+    endDate: Date,
+  ): Appointment {
+    const appointmentStartDate = AppointmentDate.create(startDate);
+    const appointmentEndDate = AppointmentDate.create(endDate);
+
+    return new Appointment(
+      id,
+      title,
+      description,
+      clientName,
+      appointmentStartDate,
+      appointmentEndDate,
+    );
+  }
 }
