@@ -22,9 +22,12 @@ export class DatabaseAppointmentRepository implements AppointmentRepository {
     return AppointmentMapper.toDomain(result);
   }
 
-  async findPage(page: number, pageSize: number): Promise<Appointment[]> {
+  async findPage(
+    page: number = 0,
+    pageSize: number = 100,
+  ): Promise<Appointment[]> {
     const appointmentEntities = await this.appointmentRepository.find({
-      skip: (page - 1) * pageSize,
+      skip: page * pageSize,
       take: pageSize,
     });
 

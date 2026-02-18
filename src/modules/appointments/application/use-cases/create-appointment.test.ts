@@ -8,16 +8,23 @@ import {
 import { generateDatesInFuture } from '../../tests/utils/date.ts';
 
 describe('Create Appointment', () => {
+  const inMemoryAppointmentRepository: AppointmentRepository = {
+    async findPage() {
+      return [];
+    },
+    async findById() {
+      return undefined;
+    },
+    async existsOverlapping() {
+      return false;
+    },
+    async save(appointment) {
+      return appointment;
+    },
+  };
+
   it('should create an appointment successfully', async () => {
     // Arrange
-    const inMemoryAppointmentRepository: AppointmentRepository = {
-      async existsOverlapping() {
-        return false;
-      },
-      async save(appointment) {
-        return appointment;
-      },
-    };
     const createAppointment = new CreateAppointment(
       inMemoryAppointmentRepository,
     );
@@ -40,11 +47,9 @@ describe('Create Appointment', () => {
   it('should throw an error if appointment overlaps with an existing appointment', async () => {
     // Arrange
     const overlappingAppointmentRepository: AppointmentRepository = {
+      ...inMemoryAppointmentRepository,
       async existsOverlapping() {
         return true;
-      },
-      async save(appointment) {
-        return appointment;
       },
     };
     const createAppointment = new CreateAppointment(

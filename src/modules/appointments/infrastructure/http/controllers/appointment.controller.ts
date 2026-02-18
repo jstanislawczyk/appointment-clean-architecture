@@ -3,16 +3,37 @@ import { CreateAppointment } from '../../../application/use-cases/create-appoint
 import { createAppointmentDtoSchema } from '../dtos/create-appointment.dto.ts';
 import { FindAppointmentById } from '../../../application/use-cases/find-appointment-by-id.ts';
 import { NotFoundError } from '../../../domain/errors/not-found.ts';
+import type { FindAppointmentsPage } from '../../../application/use-cases/find-appointments-page.ts';
+import { pageParamsDtoSchema } from '../dtos/page-params.dto.ts';
 
 export class AppointmentController {
   constructor(
     private readonly findAppointmentById: FindAppointmentById,
+    private readonly findAppointmentsPage: FindAppointmentsPage,
     private readonly createAppointment: CreateAppointment,
   ) {}
 
   async findAll(request: Request, response: Response) {
-    // Placeholder for future implementation
-    return response.status(200).json({ message: 'List of appointments' });
+    const parsedQueryParams = pageParamsDtoSchema.safeParse(request.query);
+
+    if (!parsedQueryParams.success) {
+      return response.status(400).json({
+        error: 'Validation failed',
+        details: parsedQueryParams.error.issues,
+      });
+    }
+
+    const { page, pageSize } = parsedQueryParams.data;
+
+    try {
+      const appointments = await this.findAppointmentsPage.execute({
+        page,
+        pageSize,
+      });
+      return response.status(200).json(appointments);
+    } catch (error: any) {
+      return response.status(500).json({ error: error.message });
+    }
   }
 
   async findById(request: Request, response: Response) {
