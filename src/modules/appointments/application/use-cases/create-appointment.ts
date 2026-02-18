@@ -5,9 +5,9 @@ import type { UseCase } from './use-case.ts';
 type CreateAppointmentInput = {
   title: string;
   description: string;
-  duration: number;
   clientName: string;
   startDate: Date;
+  endDate: Date;
 };
 
 type CreateAppointmentOutput = {
@@ -23,13 +23,13 @@ export class CreateAppointment implements UseCase<
   async execute(
     input: CreateAppointmentInput,
   ): Promise<CreateAppointmentOutput> {
-    const { title, description, duration, clientName, startDate } = input;
+    const { title, description, clientName, startDate, endDate } = input;
     const appointment = Appointment.create(
       title,
       description,
-      duration,
       clientName,
       startDate,
+      endDate,
     );
 
     const savedAppointment = await this.appointmentRepository.save(appointment);

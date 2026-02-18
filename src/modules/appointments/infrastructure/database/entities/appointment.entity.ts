@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
 
 @Entity('appointments')
+@Index(['startDate', 'endDate'])
 export class AppointmentEntity {
   @PrimaryColumn()
   public id: string;
@@ -14,9 +15,9 @@ export class AppointmentEntity {
   @Column()
   public clientName: string;
 
-  @Column()
-  public duration: number;
-
   @Column({ type: 'datetime' })
   public startDate: Date;
+
+  @Column({ type: 'datetime' })
+  public endDate: Date;
 }
