@@ -7,38 +7,40 @@ export class Appointment {
     readonly id: string,
     readonly title: string,
     readonly description: string,
-    readonly duration: number, // In seconds
     readonly clientName: string,
     readonly startDate: AppointmentDate,
+    readonly endDate: AppointmentDate,
   ) {}
 
   public static create(
     title: string,
     description: string,
-    duration: number,
     clientName: string,
     startDate: Date,
+    endDate: Date,
   ): Appointment {
-    if (duration < 0) {
-      throw new DomainError('Duration must be a positive number');
+    if (endDate < startDate) {
+      throw new DomainError('End date must be after start date');
     }
 
     const twoHours = 7200;
+    const duration = (endDate.getTime() - startDate.getTime()) / 1000;
 
     if (duration > twoHours) {
       throw new DomainError(`Duration cannot exceed ${twoHours} seconds`);
     }
 
-    const appointmentDate = AppointmentDate.create(startDate);
+    const appointmentStartDate = AppointmentDate.create(startDate);
+    const appointmentEndDate = AppointmentDate.create(endDate);
     const id = randomUUID();
 
     return new Appointment(
       id,
       title,
       description,
-      duration,
       clientName,
-      appointmentDate,
+      appointmentStartDate,
+      appointmentEndDate,
     );
   }
 }

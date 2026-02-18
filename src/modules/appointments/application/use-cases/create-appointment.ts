@@ -1,16 +1,17 @@
 import type { AppointmentRepository } from '../../domain/repositories/appointment.repository.ts';
 import { Appointment } from '../../domain/entities/appointment.ts';
 import type { UseCase } from './use-case.ts';
+import { DateRange } from '../../domain/value-objects/date-range.ts';
 
-type CreateAppointmentInput = {
+export type CreateAppointmentInput = {
   title: string;
   description: string;
-  duration: number;
   clientName: string;
   startDate: Date;
+  endDate: Date;
 };
 
-type CreateAppointmentOutput = {
+export type CreateAppointmentOutput = {
   id: string;
 };
 
@@ -23,14 +24,25 @@ export class CreateAppointment implements UseCase<
   async execute(
     input: CreateAppointmentInput,
   ): Promise<CreateAppointmentOutput> {
-    const { title, description, duration, clientName, startDate } = input;
+    const { title, description, clientName, startDate, endDate } = input;
     const appointment = Appointment.create(
       title,
       description,
-      duration,
       clientName,
       startDate,
+      endDate,
     );
+    const dateRangeToCheck = new DateRange(
+      appointment.startDate.toDate(),
+      appointment.endDate.toDate(),
+    );
+
+    const hasOverlapingAppointment =
+      await this.appointmentRepository.existsOverlapping(dateRangeToCheck);
+
+    if (hasOverlapingAppointment) {
+      throw new Error('Appointment overlaps with an existing appointment');
+    }
 
     const savedAppointment = await this.appointmentRepository.save(appointment);
 

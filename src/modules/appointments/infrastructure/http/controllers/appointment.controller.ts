@@ -15,16 +15,16 @@ export class AppointmentController {
       });
     }
 
-    const { title, description, duration, clientName, startDate } =
+    const { title, description, clientName, startDate, endDate } =
       parsedBody.data;
 
     try {
       const result = await this.createAppointment.execute({
         title,
         description,
-        duration,
         clientName,
         startDate: new Date(startDate),
+        endDate: new Date(endDate),
       });
 
       return response.status(201).json(result);

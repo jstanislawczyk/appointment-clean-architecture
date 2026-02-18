@@ -8,8 +8,8 @@ export class AppointmentMapper {
     orm.title = appointment.title;
     orm.description = appointment.description;
     orm.clientName = appointment.clientName;
-    orm.duration = appointment.duration;
     orm.startDate = appointment.startDate.toDate();
+    orm.endDate = appointment.endDate.toDate();
 
     return orm;
   }
