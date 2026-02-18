@@ -18,4 +18,19 @@ export class DatabaseAppointmentRepository implements AppointmentRepository {
 
     return appointment;
   }
+
+  async existsOverlapping(dateRange: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<boolean> {
+    return this.appointmentRepository
+      .createQueryBuilder('appointmentOverlap')
+      .where('appointmentOverlap.startDate < :endDate', {
+        endDate: dateRange.endDate,
+      })
+      .andWhere('appointmentOverlap.endDate > :startDate', {
+        startDate: dateRange.startDate,
+      })
+      .getExists();
+  }
 }
