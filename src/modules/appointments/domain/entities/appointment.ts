@@ -19,15 +19,12 @@ export class Appointment {
     startDate: Date,
     endDate: Date,
   ): Appointment {
-    if (endDate < startDate) {
+    if (!this.startDateIsBeforeEndDate(startDate, endDate)) {
       throw new DomainError('End date must be after start date');
     }
 
-    const twoHours = 7200;
-    const duration = (endDate.getTime() - startDate.getTime()) / 1000;
-
-    if (duration > twoHours) {
-      throw new DomainError(`Duration cannot exceed ${twoHours} seconds`);
+    if (!this.hasCorrectDuration(startDate, endDate)) {
+      throw new DomainError(`Duration cannot exceed 7200 seconds`);
     }
 
     const appointmentStartDate = AppointmentDate.create(startDate);
@@ -52,8 +49,8 @@ export class Appointment {
     startDate: Date,
     endDate: Date,
   ): Appointment {
-    const appointmentStartDate = AppointmentDate.create(startDate);
-    const appointmentEndDate = AppointmentDate.create(endDate);
+    const appointmentStartDate = AppointmentDate.rehydrate(startDate);
+    const appointmentEndDate = AppointmentDate.rehydrate(endDate);
 
     return new Appointment(
       id,
@@ -63,5 +60,60 @@ export class Appointment {
       appointmentStartDate,
       appointmentEndDate,
     );
+  }
+
+  public isFinished(): boolean {
+    const now = new Date();
+    return this.endDate.toDate() < now;
+  }
+
+  public update(
+    title?: string,
+    description?: string,
+    startDate?: Date,
+    endDate?: Date,
+  ): Appointment {
+    if (this.isFinished()) {
+      throw new DomainError('Cannot update a finished appointment');
+    }
+
+    const newTitle = title ?? this.title;
+    const newDescription = description ?? this.description;
+    const newStartDate = startDate ?? this.startDate.toDate();
+    const newEndDate = endDate ?? this.endDate.toDate();
+
+    if (!Appointment.startDateIsBeforeEndDate(newStartDate, newEndDate)) {
+      throw new DomainError('End date must be after start date');
+    }
+
+    if (!Appointment.hasCorrectDuration(newStartDate, newEndDate)) {
+      throw new DomainError(`Duration cannot exceed 7200 seconds`);
+    }
+
+    const appointmentStartDate = AppointmentDate.create(newStartDate);
+    const appointmentEndDate = AppointmentDate.create(newEndDate);
+
+    return new Appointment(
+      this.id,
+      newTitle,
+      newDescription,
+      this.clientName,
+      appointmentStartDate,
+      appointmentEndDate,
+    );
+  }
+
+  private static hasCorrectDuration(startDate: Date, endDate: Date): boolean {
+    const twoHours = 7200;
+    const duration = (endDate.getTime() - startDate.getTime()) / 1000;
+
+    return duration <= twoHours;
+  }
+
+  private static startDateIsBeforeEndDate(
+    startDate: Date,
+    endDate: Date,
+  ): boolean {
+    return startDate < endDate;
   }
 }

@@ -41,6 +41,17 @@ export class DatabaseAppointmentRepository implements AppointmentRepository {
     return appointment;
   }
 
+  async update(appointment: Appointment): Promise<Appointment> {
+    await this.appointmentRepository.update(appointment.id, {
+      title: appointment.title,
+      description: appointment.description,
+      startDate: appointment.startDate.toDate(),
+      endDate: appointment.endDate.toDate(),
+    });
+
+    return appointment;
+  }
+
   async existsOverlapping(dateRange: {
     startDate: Date;
     endDate: Date;
@@ -54,5 +65,9 @@ export class DatabaseAppointmentRepository implements AppointmentRepository {
         startDate: dateRange.startDate,
       })
       .getExists();
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.appointmentRepository.delete(id);
   }
 }

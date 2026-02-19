@@ -15,6 +15,10 @@ export class AppointmentDate {
     return new AppointmentDate(date);
   }
 
+  public static rehydrate(date: Date): AppointmentDate {
+    return new AppointmentDate(date);
+  }
+
   public toDate(): Date {
     return this.date;
   }
