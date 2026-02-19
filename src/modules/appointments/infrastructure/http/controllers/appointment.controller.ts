@@ -5,12 +5,15 @@ import { FindAppointmentById } from '../../../application/use-cases/find-appoint
 import { NotFoundError } from '../../../domain/errors/not-found.ts';
 import type { FindAppointmentsPage } from '../../../application/use-cases/find-appointments-page.ts';
 import { pageParamsDtoSchema } from '../dtos/page-params.dto.ts';
+import type { DeleteAppointment } from '../../../application/use-cases/delete-appointment.ts';
+import { PastDateError } from '../../../domain/errors/past-date.ts';
 
 export class AppointmentController {
   constructor(
     private readonly findAppointmentById: FindAppointmentById,
     private readonly findAppointmentsPage: FindAppointmentsPage,
     private readonly createAppointment: CreateAppointment,
+    private readonly deleteAppointment: DeleteAppointment,
   ) {}
 
   async findAll(request: Request, response: Response) {
@@ -88,6 +91,39 @@ export class AppointmentController {
       return response.status(201).json(result);
     } catch (error: any) {
       return response.status(400).json({ error: error.message });
+    }
+  }
+
+  async delete(request: Request, response: Response) {
+    const id = request.params.id;
+
+    if (!id) {
+      return response.status(400).json({ error: 'Appointment ID is required' });
+    }
+
+    if (typeof id !== 'string') {
+      return response
+        .status(400)
+        .json({ error: 'Appointment ID must be a string' });
+    }
+
+    try {
+      await this.deleteAppointment.execute({ id });
+      return response.status(204).send();
+    } catch (error: any) {
+      if (error instanceof NotFoundError) {
+        return response.status(404).json({
+          error: error.message,
+        });
+      }
+
+      if (error instanceof PastDateError) {
+        return response.status(400).json({
+          error: error.message,
+        });
+      }
+
+      return response.status(500).json({ error: error.message });
     }
   }
 }

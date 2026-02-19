@@ -52,8 +52,8 @@ export class Appointment {
     startDate: Date,
     endDate: Date,
   ): Appointment {
-    const appointmentStartDate = AppointmentDate.create(startDate);
-    const appointmentEndDate = AppointmentDate.create(endDate);
+    const appointmentStartDate = AppointmentDate.rehydrate(startDate);
+    const appointmentEndDate = AppointmentDate.rehydrate(endDate);
 
     return new Appointment(
       id,
@@ -63,5 +63,10 @@ export class Appointment {
       appointmentStartDate,
       appointmentEndDate,
     );
+  }
+
+  public isFinished(): boolean {
+    const now = new Date();
+    return this.endDate.toDate() < now;
   }
 }

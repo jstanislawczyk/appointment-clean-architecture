@@ -55,4 +55,8 @@ export class DatabaseAppointmentRepository implements AppointmentRepository {
       })
       .getExists();
   }
+
+  async delete(id: string): Promise<void> {
+    await this.appointmentRepository.delete(id);
+  }
 }

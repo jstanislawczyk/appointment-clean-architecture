@@ -7,6 +7,7 @@ export function appointmentRoutes(controller: AppointmentController): Router {
   router.get('/', controller.findAll.bind(controller));
   router.get('/:id', controller.findById.bind(controller));
   router.post('/', controller.create.bind(controller));
+  router.delete('/:id', controller.delete.bind(controller));
 
   return router;
 }

@@ -6,4 +6,5 @@ export interface AppointmentRepository {
   findById(id: string): Promise<Appointment | undefined>;
   save(appointment: Appointment): Promise<Appointment>;
   existsOverlapping(dateRange: DateRange): Promise<boolean>;
+  delete(id: string): Promise<void>;
 }
